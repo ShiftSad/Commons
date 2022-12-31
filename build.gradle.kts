@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("plugin.serialization") version "1.7.22"
     kotlin("jvm") version "1.7.22"
+    `maven-publish`
 }
 
 group = "org.example"
@@ -29,4 +30,17 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
+}
+
+// Maven publish
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.properties["group"] as? String?
+            artifactId = project.name
+            version = project.properties["version"] as? String?
+
+            from(components["java"])
+        }
+    }
 }
